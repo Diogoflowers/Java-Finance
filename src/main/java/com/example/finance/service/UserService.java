@@ -12,8 +12,6 @@ public class UserService {
 
     private final UserRepository repository;
 
-
-
     public UserResponseDto criarUsuario(UserDto dto) {
         return null;
     }
