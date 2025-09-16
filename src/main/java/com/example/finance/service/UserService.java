@@ -17,6 +17,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto criarUsuario(UserDto dto) {
+        if (repository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Usuário já existe!");
+        }
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         User user = UserMapper.toEntity(dto, encodedPassword);
         User saved = repository.save(user);
