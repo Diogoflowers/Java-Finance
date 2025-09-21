@@ -21,6 +21,5 @@ public class FinanceRequestDto {
 
     private String categoryName;
 
-    private Long userId;
 
 }
