@@ -10,6 +10,7 @@ import com.example.finance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -35,5 +36,15 @@ public class FinanceService {
         return repository.findByUser(user).stream()
                 .map(FinanceMapper::toDto)
                 .toList();
+    }
+
+    public void deleteFinance(Long id, String username) throws AccessDeniedException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        Finance finance = repository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new AccessDeniedException("Recurso não encontrado ou não pertence ao usuário"));
+
+        repository.delete(finance);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,16 @@ public class FinanceController {
     public ResponseEntity<List<FinanceResponseDto>> listFinances(Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(financeService.listFinance(username));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFinance(
+            @PathVariable Long id,
+            Authentication authentication
+    ) throws AccessDeniedException {
+        String username = authentication.getName();
+        financeService.deleteFinance(id, username);
+        return ResponseEntity.noContent().build();
     }
 
 }
